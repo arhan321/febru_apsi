@@ -591,6 +591,36 @@ document.addEventListener("DOMContentLoaded", function () {
     renderCartItems();
 });
 
+    function displayCartItems() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cartList = document.getElementById('cart-list');
+    let cartTotalPrice = document.getElementById('cart-total-price');
+    
+    if (!cartList || !cartTotalPrice) {
+        console.error('Cart list or total price element not found.');
+        return;
+    }
+
+    cartList.innerHTML = ''; // Clear previous content
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartList.innerHTML = '<p>No items in cart</p>';
+        cartTotalPrice.innerHTML = '';
+    } else {
+        cart.forEach(item => {
+            let itemLi = document.createElement('li');
+            itemLi.classList.add('cart-item');
+            itemLi.innerHTML = `Product: ${item.name} | Price: Rp ${item.price.toLocaleString('id-ID')} | Quantity: ${item.quantity}`;
+            cartList.appendChild(itemLi);
+            
+            total += item.price * item.quantity;
+        });
+
+        cartTotalPrice.innerHTML = `Total: Rp ${total.toLocaleString('id-ID')}`;
+    }
+}
+
    </script>
 
     <!-- Template Javascript -->

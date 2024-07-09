@@ -126,4 +126,6 @@ class ProductCartController extends Controller
 
         return response()->json(['message' => 'Product not found in cart.'], 404);
     }
+
+    
 }

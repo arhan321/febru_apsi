@@ -25,10 +25,11 @@ class CheckoutController extends Controller
         'no_telepon' => 'required|string|max:15',
         'alamat' => 'required|string',
         'total' => 'required|numeric',
+        'cart' => 'required|string', // Menambahkan validasi untuk cart
     ]);
 
-    // Retrieve cart from session
-    $cart = session()->get('cart', []);
+    // Retrieve cart from request
+    $cart = json_decode($request->input('cart'), true); // Mengambil data cart dari form
     $total = $request->input('total');
     $name = $request->input('name');
     $email = $request->input('email');
@@ -80,6 +81,18 @@ class CheckoutController extends Controller
     }
 }
 
+public function showCart()
+{
+    $cart = session()->get('cart', []);
+
+    // Hitung total harga
+    $total = 0;
+    foreach ($cart as $id => $details) {
+        $total += $details['price'] * $details['quantity'];
+    }
+
+    return view('midtrans.checkout', compact('cart', 'total'));
+}
 
     public function showOrder($id)
     {
